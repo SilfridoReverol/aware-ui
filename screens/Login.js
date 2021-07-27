@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -13,8 +13,50 @@ import {
 } from 'react-native';
 
 import { Ionicons } from '@expo/vector-icons';
+import MainButton from '../components/MainButton';
 
 const Login = (props) => {
+  const [user, setUser] = useState({ email: '', password: '' });
+  const [loading, setLoading] = useState(false);
+
+  let passInput = '';
+
+  const submitSignIn = async () => {
+    setLoading(true);
+    if (!Field.checkFields([user.email, user.password])) {
+      Alert.alert('Empty Field', 'Please, fill the fields');
+    } else {
+      const data = await Http.send('POST', '/api/users/signin', user);
+
+      if (!data) {
+        Alert.alert('Fatal Error', 'No data from server...');
+      } else {
+        switch (data.typeResponse) {
+          case 'Success':
+            await AsyncStorage.setItem('user', JSON.stringify(data.body[0]));
+            navigation.navigate('Home', data.body[0]);
+            break;
+
+          case 'Fail':
+            data.body.errors.forEach((element) => {
+              ToastAndroid.showWithGravity(
+                element.text,
+                ToastAndroid.SHORT,
+                ToastAndroid.TOP
+              );
+            });
+            break;
+
+          default:
+            Alert.alert(data.typeResponse, data.message);
+            break;
+        }
+      }
+    }
+
+    setLoading(false);
+  };
+
   return (
     <TouchableWithoutFeedback
       onPress={() => {
@@ -42,46 +84,51 @@ const Login = (props) => {
             </View>
           </View>
           <View style={styles.inputContainer}>
-            <Text>Sign In</Text>
-            <Text>Welcome Again to Aware!</Text>
-
             <View style={styles.section}>
-              <Ionicons name="person" size={20} color="black" />
+              <Ionicons name="mail" size={20} color="black" />
               <TextInput
                 placeholder="Email"
+                autoCorrect={false}
                 autoCapitalize="none"
                 keyboardType={'email-address'}
                 blurOnSubmit={false}
                 style={styles.textInput}
                 autoFocus
-                //   onChangeText={(email) => setUser({ ...user, email: email })}
-                //   onSubmitEditing={() => passInput.focus()}
+                onChangeText={(email) => setUser({ ...user, email: email })}
+                onSubmitEditing={() => passInput.focus()}
               />
             </View>
             <View style={styles.section}>
               <Ionicons name="ios-lock-closed" size={20} color="black" />
               <TextInput
                 ref={(input) => (passInput = input)}
-                placeholder="Password"
+                placeholder="Contraseña"
                 autoCapitalize="none"
                 style={styles.textInput}
-                //   secureTextEntry
-                //   onChangeText={(password) =>
-                //     setUser({ ...user, password: password })
-                //   }
-                // onSubmitEditing={submitSignIn}
+                secureTextEntry
+                onChangeText={(password) =>
+                  setUser({ ...user, password: password })
+                }
+                onSubmitEditing={submitSignIn}
               />
             </View>
 
+            <MainButton onPress={() => console.log(user)}>
+              Inicia Sesión
+            </MainButton>
+
             <View style={styles.signUp}>
-              <Text style={styles.textSignUp}>Don't have an account?</Text>
+              <Text style={styles.textSignUp}>No tienes cuenta?</Text>
               <TouchableOpacity
                 onPress={() => props.navigation.replace('Register')}
               >
                 <Text
-                  style={[styles.textSignUp, { color: 'white', marginLeft: 3 }]}
+                  style={[
+                    styles.textSignUp,
+                    { color: '#F8F8FF', marginLeft: 5 },
+                  ]}
                 >
-                  Sign Up
+                  Registrate
                 </Text>
               </TouchableOpacity>
             </View>
@@ -98,12 +145,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   logosContainer: {
+    justifyContent: 'flex-start',
+    direction: 'rtl',
+    flexWrap: 'wrap',
+
     alignItems: 'center',
     marginVertical: 10,
   },
   inputContainer: {
     padding: 40,
-    marginTop: 50,
+    marginBottom: 30,
   },
   image: {
     flex: 1,
@@ -118,18 +169,18 @@ const styles = StyleSheet.create({
     backgroundColor: '#000000c0',
   },
   imageContainer: {
-    backgroundColor: 'rgba(255, 255, 255, 0.65)',
+    backgroundColor: 'rgba(255, 255, 255, 0.70)',
     flexDirection: 'row',
     alignItems: 'center',
-    borderRadius: 20,
+    borderRadius: 15,
     justifyContent: 'center',
-    width: 280,
+    width: 260,
     height: 100,
-    marginHorizontal: Dimensions.get('window').width / 5.5,
+    marginVertical: 0,
     overflow: 'hidden',
   },
   logoContainer: {
-    width: 250,
+    width: 230,
     height: 150,
     resizeMode: 'contain',
   },
@@ -138,21 +189,26 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 20,
     justifyContent: 'center',
+    marginBottom: 15,
     width: 280,
     height: 100,
     marginHorizontal: Dimensions.get('window').width / 5.5,
     overflow: 'hidden',
+    shadowColor: 'black',
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 8,
+    shadowOpacity: 0.28,
   },
   awareImage: {
-    width: 200,
+    width: 180,
     height: 150,
     resizeMode: 'contain',
   },
   section: {
     flexDirection: 'row',
     borderWidth: 1,
-    borderRadius: 20,
-    borderColor: 'black',
+    borderRadius: 15,
+    borderColor: 'rgba(204, 204, 204, 0.78)',
     paddingHorizontal: 15,
     paddingVertical: 10,
     alignItems: 'center',
@@ -172,7 +228,6 @@ const styles = StyleSheet.create({
   textSignUp: {
     color: 'black',
     textAlign: 'center',
-    fontFamily: 'open-sans',
   },
 });
 
