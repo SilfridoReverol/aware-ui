@@ -7,6 +7,7 @@ import {
   Image,
   TextInput,
   Dimensions,
+  Alert,
   TouchableOpacity,
   Keyboard,
   TouchableWithoutFeedback,
@@ -15,13 +16,14 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import MainButton from '../components/MainButton';
 import RNPickerSelect from 'react-native-picker-select';
+import CustomDatePicker from '../components/DatePicker';
 
 const Register = (props) => {
   const [user, setUser] = useState({
     firstName: '',
     lastName: '',
     sex: '',
-    age: null,
+    age: '',
     phoneNumber: '',
     email: '',
     therapistEmail: '',
@@ -30,6 +32,14 @@ const Register = (props) => {
   });
   const [inputNumber, setInputNumber] = useState(1);
   const [loading, setLoading] = useState(false);
+
+  const goForward = () => {
+    setInputNumber(inputNumber + 1);
+  };
+
+  const goBack = () => {
+    setInputNumber(inputNumber - 1);
+  };
 
   let passInput = '';
 
@@ -41,6 +51,7 @@ const Register = (props) => {
         <View style={styles.section}>
           <Ionicons name="person" size={20} color="black" />
           <TextInput
+            value={user.firstName}
             placeholder="Nombre"
             autoCorrect={false}
             autoCapitalize="words"
@@ -57,6 +68,7 @@ const Register = (props) => {
         <View style={styles.section}>
           <Ionicons name="person" size={20} color="black" />
           <TextInput
+            value={user.lastName}
             placeholder="Apellido"
             ref={(input) => (passInput = input)}
             autoCapitalize="words"
@@ -70,6 +82,7 @@ const Register = (props) => {
         <View style={styles.section}>
           <Ionicons name="male-female" size={20} color="black" />
           <RNPickerSelect
+            value={user.sex}
             placeholder={{
               label: 'Indica tu genero...',
               color: 'black',
@@ -87,7 +100,7 @@ const Register = (props) => {
         </View>
         <View style={styles.section}>
           <Ionicons name="calendar" size={20} color="black" />
-          <TextInput
+          {/* <TextInput
             ref={(input) => (passInput = input)}
             placeholder="Edad"
             autoCapitalize="none"
@@ -95,11 +108,16 @@ const Register = (props) => {
             keyboardType="numeric"
             onChangeText={(age) => setUser({ ...user, age: age })}
             // onSubmitEditing={submitSignIn}
+          /> */}
+          <CustomDatePicker
+            value={user.age}
+            onDateChange={(value) => setUser({ ...user, age: value })}
           />
         </View>
         <View style={styles.section}>
           <Ionicons name="mail" size={20} color="black" />
           <TextInput
+            value={user.email}
             ref={(input) => (passInput = input)}
             placeholder="Email"
             autoCorrect={false}
@@ -111,7 +129,7 @@ const Register = (props) => {
           />
         </View>
 
-        <MainButton onPress={() => console.log(user)}>Inicia Sesión</MainButton>
+        <MainButton onPress={() => goForward()}>Siguiente</MainButton>
 
         <View style={styles.signUp}>
           <Text style={styles.textSignUp}>No tienes cuenta?</Text>
@@ -127,35 +145,78 @@ const Register = (props) => {
         </View>
       </View>
     );
-  } else if (inputNumber === 2) {
-    <View>
-      <View style={styles.section}>
-        <Ionicons name="mail" size={20} color="black" />
-        <TextInput
-          placeholder=""
-          autoCorrect={false}
-          autoCapitalize="none"
-          keyboardType={'email-address'}
-          blurOnSubmit={false}
-          style={styles.textInput}
-          autoFocus
-          onChangeText={(email) => setUser({ ...user, email: email })}
-          onSubmitEditing={() => passInput.focus()}
-        />
+  }
+  if (inputNumber === 2) {
+    showInput = (
+      <View style={styles.inputContainer}>
+        <View style={styles.section}>
+          <Ionicons name="phone-portrait-outline" size={20} color="black" />
+          <TextInput
+            value={user.phoneNumber}
+            placeholder="Numero Celular"
+            autoCapitalize="none"
+            keyboardType={'phone-pad'}
+            style={styles.textInput}
+            onChangeText={(phoneNumber) =>
+              setUser({ ...user, phoneNumber: phoneNumber })
+            }
+            // onSubmitEditing={submitSignIn}
+          />
+        </View>
+        <View style={styles.section}>
+          <Ionicons name="mail" size={20} color="black" />
+          <TextInput
+            value={user.therapistEmail}
+            placeholder="Email del doctor"
+            autoCorrect={false}
+            autoCapitalize="none"
+            keyboardType={'email-address'}
+            style={styles.textInput}
+            onChangeText={(therapistEmail) =>
+              setUser({ ...user, therapistEmail: therapistEmail })
+            }
+            // onSubmitEditing={submitSignIn}
+          />
+        </View>
+        <View style={styles.section}>
+          <Ionicons name="ios-lock-closed" size={20} color="black" />
+          <TextInput
+            value={user.password}
+            ref={(input) => (passInput = input)}
+            placeholder="Contraseña"
+            autoCapitalize="none"
+            style={styles.textInput}
+            secureTextEntry
+            onChangeText={(password) =>
+              setUser({ ...user, password: password })
+            }
+            // onSubmitEditing={submitSignIn}
+          />
+        </View>
+        <View style={styles.section}>
+          <Ionicons name="ios-lock-closed" size={20} color="black" />
+          <TextInput
+            value={user.confirmPassword}
+            ref={(input) => (passInput = input)}
+            placeholder="Confirmar contraseña"
+            autoCapitalize="none"
+            style={styles.textInput}
+            secureTextEntry
+            onChangeText={(confirmPassword) =>
+              setUser({ ...user, confirmPassword: confirmPassword })
+            }
+            // onSubmitEditing={submitSignIn}
+          />
+        </View>
+        <MainButton
+          style={{ backgroundColor: '#7db780' }}
+          onPress={() => goBack()}
+        >
+          Atras
+        </MainButton>
+        <MainButton onPress={() => console.log(user)}>Registrate</MainButton>
       </View>
-      <View style={styles.section}>
-        <Ionicons name="ios-lock-closed" size={20} color="black" />
-        <TextInput
-          ref={(input) => (passInput = input)}
-          placeholder="Contraseña"
-          autoCapitalize="none"
-          style={styles.textInput}
-          secureTextEntry
-          onChangeText={(password) => setUser({ ...user, password: password })}
-          onSubmitEditing={submitSignIn}
-        />
-      </View>
-    </View>;
+    );
   }
 
   return (
