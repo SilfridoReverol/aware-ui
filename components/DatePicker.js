@@ -16,6 +16,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 const CustomDatePicker = (props) => {
   const [date, setDate] = useState(moment());
   const [show, setShow] = useState(false);
+  const [showText, setShowText] = useState(true);
 
   const onChange = (e, selectedDate) => {
     setDate(moment(selectedDate));
@@ -28,15 +29,34 @@ const CustomDatePicker = (props) => {
   const onDone = () => {
     props.onDateChange(date);
     setDate(date);
+    setShowText(false);
     setShow(false);
   };
+
+  let selectDate;
+
+  if (showText) {
+    selectDate = (
+      <View>
+        <Text style={{ paddingLeft: 10, color: 'rgba(0, 0, 0, 0.16)' }}>
+          {props.children}
+        </Text>
+      </View>
+    );
+  } else if (!showText) {
+    selectDate = (
+      <View>
+        <Text style={{ paddingLeft: 10, color: 'black' }}>
+          {date.format('DD-MM-YYYY')}
+        </Text>
+      </View>
+    );
+  }
 
   return (
     <TouchableWithoutFeedback activeOpacity={0} onPress={() => setShow(true)}>
       <View style={{ flexDirection: 'row' }}>
-        <Text style={{ paddingLeft: 10 }}>Fecha de nacimiento:</Text>
-        <Text style={{ paddingLeft: 5 }}>{date.format('DD-MM-YYYY')}</Text>
-
+        {selectDate}
         <Modal
           transparent={true}
           animationType={'fade'}

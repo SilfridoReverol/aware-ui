@@ -17,6 +17,9 @@ import { Ionicons } from '@expo/vector-icons';
 import MainButton from '../components/MainButton';
 import RNPickerSelect from 'react-native-picker-select';
 import CustomDatePicker from '../components/DatePicker';
+import Http from '../components/Http';
+import Field from '../components/Fields';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Register = (props) => {
   const [user, setUser] = useState({
@@ -44,6 +47,53 @@ const Register = (props) => {
   let passInput = '';
 
   let showInput;
+
+  const submitSignUp = async () => {
+    // setLoading(true);
+    if (
+      !Field.checkFields([
+        user.firstName,
+        user.lastName,
+        user.sex,
+        user.age,
+        user.phoneNumber,
+        user.email,
+        user.therapistEmail,
+        user.password,
+        user.confirmPassword,
+      ])
+    ) {
+      Alert.alert('Empty Field', 'Please, fill the fields');
+    } else {
+      const data = await Http.send('POST', '/api/users/signup', user);
+
+      if (!data) {
+        Alert.alert('Fatal Error', 'No data from server...');
+      } else {
+        switch (data.typeResponse) {
+          case 'Success':
+            await AsyncStorage.setItem('user', JSON.stringify(data.body[0]));
+            props.navigation.replace({
+              routeName: 'Home',
+              params: {
+                data: data.body[0],
+              },
+            });
+            break;
+
+          case 'Fail':
+            console.log('error');
+            break;
+
+          default:
+            Alert.alert(data.typeResponse, data.message);
+            break;
+        }
+      }
+    }
+
+    // setLoading(false);
+  };
 
   if (inputNumber === 1) {
     showInput = (
@@ -100,15 +150,6 @@ const Register = (props) => {
         </View>
         <View style={styles.section}>
           <Ionicons name="calendar" size={20} color="black" />
-          {/* <TextInput
-            ref={(input) => (passInput = input)}
-            placeholder="Edad"
-            autoCapitalize="none"
-            style={styles.textInput}
-            keyboardType="numeric"
-            onChangeText={(age) => setUser({ ...user, age: age })}
-            // onSubmitEditing={submitSignIn}
-          /> */}
           <CustomDatePicker
             value={user.age}
             onDateChange={(value) => setUser({ ...user, age: value })}
@@ -214,7 +255,7 @@ const Register = (props) => {
         >
           Atras
         </MainButton>
-        <MainButton onPress={() => console.log(user)}>Registrate</MainButton>
+        <MainButton onPress={() => submitSignUp()}>Registrate</MainButton>
       </View>
     );
   }

@@ -3,6 +3,7 @@ import { useAssets } from 'expo-asset';
 import AppLoading from 'expo-app-loading';
 import { StyleSheet, Text, View } from 'react-native';
 import AwareNavigator from './navigation/AwareNavigator';
+import MainNavigation from './navigation/AwareNavigator';
 
 // const fetchAssets = () => {
 //   return Asset.loadAsync({
@@ -13,6 +14,9 @@ import AwareNavigator from './navigation/AwareNavigator';
 export default function App() {
   const [assets] = useAssets([
     require('./assets/aware-bg.png'),
+    require('./assets/aware-bg-2.png'),
+    require('./assets/anamnesis-nobg.png'),
+    require('./assets/becks-nobg.png'),
     require('./assets/nobg-awarelogo.png'),
     require('./assets/aware-nobg.png'),
   ]);

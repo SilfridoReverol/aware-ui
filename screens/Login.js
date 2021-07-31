@@ -14,6 +14,9 @@ import {
 
 import { Ionicons } from '@expo/vector-icons';
 import MainButton from '../components/MainButton';
+import Http from '../components/Http';
+import Field from '../components/Fields';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Login = (props) => {
   const [user, setUser] = useState({ email: '', password: '' });
@@ -22,7 +25,7 @@ const Login = (props) => {
   let passInput = '';
 
   const submitSignIn = async () => {
-    setLoading(true);
+    // setLoading(true);
     if (!Field.checkFields([user.email, user.password])) {
       Alert.alert('Empty Field', 'Please, fill the fields');
     } else {
@@ -34,16 +37,19 @@ const Login = (props) => {
         switch (data.typeResponse) {
           case 'Success':
             await AsyncStorage.setItem('user', JSON.stringify(data.body[0]));
-            navigation.navigate('Home', data.body[0]);
+            const dataToString = JSON.stringify(data.body[0]);
+            console.log(dataToString);
+            props.navigation.replace({
+              routeName: 'Home',
+              params: {
+                data: data.body[0],
+              },
+            });
             break;
 
           case 'Fail':
             data.body.errors.forEach((element) => {
-              ToastAndroid.showWithGravity(
-                element.text,
-                ToastAndroid.SHORT,
-                ToastAndroid.TOP
-              );
+              console(element.text);
             });
             break;
 
@@ -54,7 +60,7 @@ const Login = (props) => {
       }
     }
 
-    setLoading(false);
+    // setLoading(false);
   };
 
   return (
@@ -113,7 +119,7 @@ const Login = (props) => {
               />
             </View>
 
-            <MainButton onPress={() => console.log(user)}>
+            <MainButton onPress={() => submitSignIn()}>
               Inicia Sesión
             </MainButton>
 
