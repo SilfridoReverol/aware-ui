@@ -19,11 +19,21 @@ import Results from '../screens/Results';
 
 const AuthStackNavigation = createStackNavigator(
   {
-    LoginStack: Login,
-    RegisterStack: Register,
+    LoginStack: {
+      screen: Login,
+      navigationOptions: {
+        headerShown: false,
+      },
+    },
+    RegisterStack: {
+      screen: Register,
+      navigationOptions: {
+        headerShown: false,
+      },
+    },
   },
   {
-    initialRouteName: 'RegisterStack',
+    initialRouteName: 'LoginStack',
   }
 );
 
@@ -31,6 +41,102 @@ const HomeStack = createStackNavigator({
   // For header options
   Home: {
     screen: Home,
+    navigationOptions: {
+      headerTitle: () => (
+        <View
+          style={{
+            flex: 1,
+            flexDirection: 'row',
+            justifyContent: 'center',
+            alignItems: 'center',
+            overflow: 'visible',
+          }}
+        >
+          <Image
+            style={{
+              width: '50%',
+              shadowColor: 'black',
+              shadowOffset: { width: 1, height: 3 },
+              shadowRadius: 8,
+              shadowOpacity: 0.28,
+              height: '50%',
+            }}
+            source={require('../assets/aware-nobg.png')}
+          />
+        </View>
+      ),
+
+      headerTransparent: true,
+    },
+  },
+  Anamnesis: {
+    screen: Anamnesis,
+    navigationOptions: {
+      headerTitle: () => (
+        <View
+          style={{
+            flex: 1,
+            flexDirection: 'row',
+            justifyContent: 'center',
+            alignItems: 'center',
+            overflow: 'visible',
+          }}
+        >
+          <Image
+            style={{
+              width: '80%',
+              shadowColor: 'black',
+              shadowOffset: { width: 1, height: 3 },
+              shadowRadius: 8,
+              shadowOpacity: 0.22,
+              height: '65%',
+            }}
+            source={require('../assets/anamnesis-nobg.png')}
+          />
+        </View>
+      ),
+
+      headerTransparent: true,
+      headerTintColor: 'white',
+    },
+  },
+  Becks: {
+    screen: Becks,
+    navigationOptions: {
+      headerTitle: () => (
+        <View
+          style={{
+            flex: 1,
+            flexDirection: 'row',
+            justifyContent: 'center',
+            alignItems: 'center',
+            overflow: 'visible',
+          }}
+        >
+          <Image
+            style={{
+              width: '60%',
+              shadowColor: 'black',
+              shadowOffset: { width: 1, height: 3 },
+              shadowRadius: 10,
+              borderRadius: 2,
+              shadowOpacity: 0.22,
+              height: '70%',
+            }}
+            source={require('../assets/becks-nobg.png')}
+          />
+        </View>
+      ),
+      headerTintColor: 'white',
+      headerTransparent: true,
+    },
+  },
+});
+
+const ResultsStack = createStackNavigator({
+  // For header options
+  Results: {
+    screen: Results,
     navigationOptions: {
       headerTitle: () => (
         <View
@@ -134,11 +240,10 @@ const AwareTabNavigator = createBottomTabNavigator(
       },
     },
     Results: {
-      screen: Results,
+      screen: ResultsStack,
       navigationOptions: {
-        tabBarLabel: `Beck's Result's`,
         tabBarIcon: ({ tintColor }) => {
-          return <Ionicons name="pencil" size={20} color={tintColor} />;
+          return <Ionicons name="list" size={20} color="black" />;
         },
       },
     },
@@ -180,84 +285,10 @@ const DrawerNav = createDrawerNavigator({
 });
 
 const MainNavigation = createSwitchNavigator({
-  HomeDrawer: DrawerNav,
   AuthStack: AuthStackNavigation, // You will use this.props.navigation.replace('HomeDrawer') after login process.
+  HomeDrawer: DrawerNav,
 });
 
 const AwareNavigator = createAppContainer(MainNavigation);
 
 export default AwareNavigator;
-
-// const AuthNavigator = createStackNavigator(
-//   {
-//     // Login: {
-//     //   screen: Login,
-//     //   navigationOptions: {
-//     //     headerShown: false,
-//     //   },
-//     // },
-//     // Register: {
-//     //   screen: Register,
-//     //   navigationOptions: {
-//     //     headerShown: false,
-//     //   },
-//     // },
-//     Home: {
-//       screen: Home,
-//       navigationOptions: {
-//         headerTitle: () => (
-//           <View
-//             style={{
-//               flex: 1,
-//               flexDirection: 'row',
-//               justifyContent: 'center',
-//               alignItems: 'center',
-//               overflow: 'hidden',
-//               marginBottom: 20,
-//             }}
-//           >
-//             <Image
-//               style={{
-//                 width: '50%',
-//                 shadowColor: 'black',
-//                 shadowOffset: { width: 1, height: 3 },
-//                 shadowRadius: 8,
-//                 shadowOpacity: 0.28,
-//                 height: '100%',
-//               }}
-//               source={require('../assets/aware-nobg.png')}
-//             />
-//           </View>
-//         ),
-
-//         headerTransparent: true,
-//       },
-//     },
-//   },
-//   { initialRouteName: 'Home' }
-
-//   // { mode: 'modal' }
-// );
-
-// const HomeNavigator = createDrawerNavigator(
-//   {
-//     User: User,
-//   },
-//   {
-//     contentOptions: {
-//       activeTintColor: 'blue',
-//       labelStyle: {
-//         fontFamily: 'open-sans-bold',
-//       },
-//     },
-//   }
-// );
-
-// const MainNavigator = createSwitchNavigator({
-//   HomeDrawer: HomeNavigator,
-//   AuthStack: AuthNavigator,
-// });
-
-// const AwareNavigator = createAppContainer({ MainNavigator });
-
-// export default AwareNavigator;

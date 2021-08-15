@@ -108,12 +108,12 @@ const CustomDatePicker = (props) => {
                       utcOffset={0}
                       mode="date"
                       display="inline"
-                      minimumDate={
+                      minimumDate={new Date(moment())}
+                      maximumDate={
                         new Date(
-                          moment().subtract(120, 'years').format('YYYY-MM-DD')
+                          moment().add(120, 'years').format('YYYY-MM-DD')
                         )
                       }
-                      maximumDate={new Date(moment())}
                       onChange={onChange}
                     />
                   </View>

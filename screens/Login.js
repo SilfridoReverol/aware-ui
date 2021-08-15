@@ -14,7 +14,7 @@ import {
 
 import { Ionicons } from '@expo/vector-icons';
 import MainButton from '../components/MainButton';
-import Http from '../components/Http';
+import Http from '../services/Http';
 import Field from '../components/Fields';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -39,12 +39,7 @@ const Login = (props) => {
             await AsyncStorage.setItem('user', JSON.stringify(data.body[0]));
             const dataToString = JSON.stringify(data.body[0]);
             console.log(dataToString);
-            props.navigation.replace({
-              routeName: 'Home',
-              params: {
-                data: data.body[0],
-              },
-            });
+            props.navigation.navigate('HomeDrawer', { screen: 'Home' });
             break;
 
           case 'Fail':
@@ -94,9 +89,9 @@ const Login = (props) => {
               <Ionicons name="mail" size={20} color="black" />
               <TextInput
                 placeholder="Email"
-                autoCorrect={false}
                 autoCapitalize="none"
                 keyboardType={'email-address'}
+                autoCorrect={false}
                 blurOnSubmit={false}
                 style={styles.textInput}
                 autoFocus
@@ -126,7 +121,7 @@ const Login = (props) => {
             <View style={styles.signUp}>
               <Text style={styles.textSignUp}>No tienes cuenta?</Text>
               <TouchableOpacity
-                onPress={() => props.navigation.replace('Register')}
+                onPress={() => props.navigation.replace('RegisterStack')}
               >
                 <Text
                   style={[

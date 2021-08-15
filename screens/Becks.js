@@ -13,17 +13,17 @@ import {
 } from 'react-native';
 
 import { Ionicons } from '@expo/vector-icons';
+import moment from 'moment';
 import MainButton from '../components/MainButton';
-import Http from '../components/Http';
+import Http from '../services/Http';
 import RNPickerSelect from 'react-native-picker-select';
 import BeckCard from '../components/BeckCard';
-import CustomDatePicker from '../components/DatePicker';
-import Card from '../components/Card';
-import Field from '../components/Fields';
+import CustomDatePicker from '../components/FutureDatePicker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Becks = (props) => {
   const data = props.navigation.getParam('data');
+  const userId = data.userid;
 
   const [becks, setBecks] = useState({
     one: 0,
@@ -47,12 +47,37 @@ const Becks = (props) => {
     nineteen: 0,
     twenty: 0,
     twentyone: 0,
-    totalNum: 0,
-    totalResult: '',
-    userid: '',
-    testDate: '',
+    totalScore: '',
+    userId: userId,
+    testDate: moment(),
     sendDate: '',
   });
+
+  const submitBecks = async () => {
+    // setLoading(true);
+
+    const data = await Http.send('POST', '/api/becks', becks);
+
+    if (!data) {
+      Alert.alert('Fatal Error', 'No data from server...');
+    } else {
+      switch (data.typeResponse) {
+        case 'Success':
+          console.log(data);
+          break;
+
+        case 'Fail':
+          console.log('error');
+          break;
+
+        default:
+          Alert.alert(data.typeResponse, data.message);
+          break;
+      }
+    }
+
+    // setLoading(false);
+  };
 
   const [total, setTotal] = useState(0);
 
@@ -82,6 +107,7 @@ const Becks = (props) => {
       parseInt(becks.twenty) +
       parseInt(becks.twentyone);
     setTotal(becksTotal);
+    setBecks({ ...becks, totalScore: becksTotal.toString() });
     setInputNumber(inputNumber + 1);
   };
 
@@ -98,6 +124,10 @@ const Becks = (props) => {
   let showResult;
 
   const numTotal = total;
+
+  if (numTotal === 0) {
+    showResult = <Text>Felicitaciones si tu total es 0!</Text>;
+  }
 
   if (numTotal >= 1 && numTotal <= 10) {
     showResult = <Text>Estos altibajos se consideran normales</Text>;
@@ -1772,7 +1802,7 @@ const Becks = (props) => {
     showInput = (
       <View style={styles.inputContainer}>
         <View>
-          <BeckCard style={{ marginBottom: 15, marginTop: 60, height: 220 }}>
+          <BeckCard style={{ marginBottom: 15, marginTop: 60, height: 370 }}>
             <View
               style={{
                 padding: 4,
@@ -1810,27 +1840,35 @@ const Becks = (props) => {
               Este resultado, asi como las selecciones sera enviadas al email de
               su psicologo.
             </Text>
+
+            <Text style={{ marginTop: 20 }}>
+              Selecciona una fecha para enviar los resultados.
+            </Text>
+
+            <View style={styles.section}>
+              <Ionicons name="calendar" size={20} color="black" />
+
+              <CustomDatePicker
+                value={becks.sendDate}
+                onDateChange={(value) =>
+                  setBecks({ ...becks, sendDate: value })
+                }
+              >
+                Fecha de envio
+              </CustomDatePicker>
+            </View>
+            <MainButton
+              onPress={() => submitBecks()}
+              style={{ backgroundColor: '#93c3a1' }}
+            >
+              Guardar
+            </MainButton>
           </BeckCard>
         </View>
 
         <View></View>
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            padding: 2,
-          }}
-        >
-          <MainButton
-            style={{ backgroundColor: '#7db780' }}
-            onPress={() => goBack()}
-          >
-            Atras
-          </MainButton>
-          <MainButton onPress={() => props.navigation.goBack()}>
-            Finalizar
-          </MainButton>
-        </View>
+
+        <MainButton onPress={() => console.log(becks)}>Finalizar</MainButton>
       </View>
     );
   }

@@ -17,7 +17,7 @@ import { Ionicons } from '@expo/vector-icons';
 import MainButton from '../components/MainButton';
 import RNPickerSelect from 'react-native-picker-select';
 import CustomDatePicker from '../components/DatePicker';
-import Http from '../components/Http';
+import Http from '../services/Http';
 import Field from '../components/Fields';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -74,7 +74,7 @@ const Register = (props) => {
           case 'Success':
             await AsyncStorage.setItem('user', JSON.stringify(data.body[0]));
             props.navigation.replace({
-              routeName: 'Home',
+              routeName: 'LoginStack',
               params: {
                 data: data.body[0],
               },
@@ -150,10 +150,13 @@ const Register = (props) => {
         </View>
         <View style={styles.section}>
           <Ionicons name="calendar" size={20} color="black" />
+
           <CustomDatePicker
             value={user.age}
             onDateChange={(value) => setUser({ ...user, age: value })}
-          />
+          >
+            Fecha de nacimiento
+          </CustomDatePicker>
         </View>
         <View style={styles.section}>
           <Ionicons name="mail" size={20} color="black" />
@@ -173,14 +176,14 @@ const Register = (props) => {
         <MainButton onPress={() => goForward()}>Siguiente</MainButton>
 
         <View style={styles.signUp}>
-          <Text style={styles.textSignUp}>No tienes cuenta?</Text>
+          <Text style={styles.textSignUp}>Ya tienes cuenta?</Text>
           <TouchableOpacity
-            onPress={() => props.navigation.replace('Register')}
+            onPress={() => props.navigation.replace('LoginStack')}
           >
             <Text
               style={[styles.textSignUp, { color: '#F8F8FF', marginLeft: 5 }]}
             >
-              Registrate
+              Inicia Sesión
             </Text>
           </TouchableOpacity>
         </View>

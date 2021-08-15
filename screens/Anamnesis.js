@@ -14,7 +14,7 @@ import {
 
 import { Ionicons } from '@expo/vector-icons';
 import MainButton from '../components/MainButton';
-import Http from '../components/Http';
+import Http from '../services/Http';
 import RNPickerSelect from 'react-native-picker-select';
 import BeckCard from '../components/BeckCard';
 import CustomDatePicker from '../components/DatePicker';
@@ -24,6 +24,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Anamnesis = (props) => {
   const data = props.navigation.getParam('data');
+  console.log(data);
 
   const [becks, setBecks] = useState({
     one: 0,
@@ -99,30 +100,6 @@ const Anamnesis = (props) => {
 
   const numTotal = total;
 
-  if (numTotal >= 1 && numTotal <= 10) {
-    showResult = <Text>Estos altibajos se consideran normales</Text>;
-  }
-
-  if (numTotal >= 11 && numTotal <= 16) {
-    showResult = <Text>Alteración leve del estado de ánimo</Text>;
-  }
-
-  if (numTotal >= 17 && numTotal <= 20) {
-    showResult = <Text>Depresión clínica leve</Text>;
-  }
-
-  if (numTotal >= 21 && numTotal <= 30) {
-    showResult = <Text>Depresión moderada</Text>;
-  }
-
-  if (numTotal >= 31 && numTotal <= 40) {
-    showResult = <Text>Depresión severa</Text>;
-  }
-
-  if (numTotal > 40) {
-    showResult = <Text>Depresión extrema</Text>;
-  }
-
   if (inputNumber === 0) {
     showInput = (
       <View style={styles.inputContainer}>
@@ -146,19 +123,141 @@ const Anamnesis = (props) => {
                 Instrucciones:
               </Text>
               <Text style={{ fontSize: 18 }}>
-                Este cuestionario consta de 21 grupos de afirmaciones. Por
-                favor, lea con atención cada uno de ellos cuidadosamente. Luego
-                elija uno de cada grupo, el que mejor describa el modo como se
-                ha sentido las últimas dos semanas, incluyendo el día de hoy.
-                Marque con un círculo el número correspondiente al enunciado
-                elegido Si varios enunciados de un mismo grupo le parecen
-                igualmente apropiados, marque el número más alto.
+                Se le presentaran varios cuestionarios con una tematica
+                distinta, los cuales serviran para la creacion de su anamnesis y
+                envio de esta a su psicologo
               </Text>
             </View>
           </BeckCard>
         </View>
 
         <MainButton onPress={() => goForward()}>Comenzar</MainButton>
+      </View>
+    );
+  }
+
+  if (inputNumber === 1) {
+    showInput = (
+      <View style={styles.inputContainer}>
+        <View>
+          <BeckCard style={{ marginBottom: 15, marginTop: 60, height: 480 }}>
+            <View
+              style={{
+                padding: 4,
+                alignItems: 'flex-start',
+                justifyContent: 'center',
+              }}
+            >
+              <Text
+                style={{
+                  fontSize: 20,
+                  textAlign: 'center',
+                  fontWeight: 'bold',
+                  marginBottom: 5,
+                }}
+              >
+                1.- General
+              </Text>
+              <View style={styles.section}>
+                <TextInput
+                  placeholder="Nivel Educativo"
+                  autoCapitalize="sentences"
+                  style={styles.textInput}
+                  // onChangeText={(password) =>
+                  //   setUser({ ...user, password: password })
+                  // }
+                  // onSubmitEditing={submitSignIn}
+                />
+              </View>
+              <View style={styles.section}>
+                <TextInput
+                  placeholder="Ocupaci'on"
+                  autoCapitalize="sentences"
+                  style={styles.textInput}
+                  // onChangeText={(password) =>
+                  //   setUser({ ...user, password: password })
+                  // }
+                  // onSubmitEditing={submitSignIn}
+                />
+              </View>
+              <View style={styles.section}>
+                <RNPickerSelect
+                  // value={becks.two}
+                  placeholder={{
+                    label: 'Estado Civil',
+                    color: 'black',
+                  }}
+                  style={{
+                    inputIOS: {
+                      width: 250,
+                      textAlign: 'left',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      paddingLeft: 10,
+                      paddingTop: 3,
+                      color: 'black',
+                      overflow: 'visible',
+                    },
+                  }}
+                  // onValueChange={(two) => setBecks({ ...becks, two: two })}
+                  items={[
+                    { label: 'Soltero/a', value: 'Soltero/a' },
+                    {
+                      label: 'Casado/a',
+                      value: 'Casado/a',
+                    },
+                    { label: 'Union Libre', value: 'Union Libre' },
+                    { label: 'Union de Hecho', value: 'Union de Hecho' },
+                    {
+                      label: 'Separado/a',
+                      value: 'Separado/a',
+                    },
+                    {
+                      label: 'Divorciado/a',
+                      value: 'Divorciado/a',
+                    },
+                    {
+                      label: 'Viudo/a',
+                      value: 'Viudo/a',
+                    },
+                  ]}
+                />
+              </View>
+              <View style={styles.section}>
+                <TextInput
+                  placeholder="Religion"
+                  autoCapitalize="sentences"
+                  style={styles.textInput}
+                  // onChangeText={(password) =>
+                  //   setUser({ ...user, password: password })
+                  // }
+                  // onSubmitEditing={submitSignIn}
+                />
+              </View>
+              <View style={styles.section}>
+                <TextInput
+                  placeholder="Direccion"
+                  autoCapitalize="sentences"
+                  style={styles.textInput}
+                  // onChangeText={(password) =>
+                  //   setUser({ ...user, password: password })
+                  // }
+                  // onSubmitEditing={submitSignIn}
+                />
+              </View>
+            </View>
+          </BeckCard>
+        </View>
+
+        <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
+          <MainButton
+            style={{ backgroundColor: '#7db780' }}
+            onPress={() => goBack()}
+          >
+            Atras
+          </MainButton>
+          <MainButton onPress={() => goForward()}>Siguiente</MainButton>
+        </View>
       </View>
     );
   }
