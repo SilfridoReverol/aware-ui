@@ -39,7 +39,7 @@ const Login = (props) => {
             await AsyncStorage.setItem('user', JSON.stringify(data.body[0]));
             const dataToString = JSON.stringify(data.body[0]);
             console.log(dataToString);
-            props.navigation.navigate('HomeDrawer', { screen: 'Home' });
+            props.navigation.navigate('HomeScreen', { screen: 'Home' });
             break;
 
           case 'Fail':

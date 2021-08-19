@@ -22,7 +22,7 @@ const ResultsGridTile = (props) => {
       >
         <View style={{ padding: 10 }}>
           <Text
-            style={{ textAlign: 'center', fontSize: 24, fontWeight: 'bold' }}
+            style={{ textAlign: 'center', fontSize: 21, fontWeight: '700' }}
           >
             Inventario de Beck
           </Text>
@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
   gridItem: {
     flex: 1,
     margin: 15,
-    height: 150,
+    height: 120,
   },
   container: {
     flex: 1,
@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
     padding: 15,
   },
   title: {
-    fontSize: 15,
+    fontSize: 17,
     padding: 10,
   },
   image: {

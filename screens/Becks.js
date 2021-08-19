@@ -157,7 +157,7 @@ const Becks = (props) => {
     showInput = (
       <View style={styles.inputContainer}>
         <View>
-          <BeckCard style={{ marginBottom: 15, marginTop: 60, height: 380 }}>
+          <BeckCard style={{ marginBottom: 15, marginTop: 60, height: 310 }}>
             <View
               style={{
                 padding: 4,
@@ -179,10 +179,9 @@ const Becks = (props) => {
                 Este cuestionario consta de 21 grupos de afirmaciones. Por
                 favor, lea con atención cada uno de ellos cuidadosamente. Luego
                 elija uno de cada grupo, el que mejor describa el modo como se
-                ha sentido las últimas dos semanas, incluyendo el día de hoy.
-                Marque con un círculo el número correspondiente al enunciado
-                elegido Si varios enunciados de un mismo grupo le parecen
-                igualmente apropiados, marque el número más alto.
+                ha sentido las últimas dos semanas, incluyendo el día de hoy. Si
+                varios enunciados de un mismo grupo le parecen igualmente
+                apropiados, seleccione el número más alto.
               </Text>
             </View>
           </BeckCard>
@@ -1802,7 +1801,7 @@ const Becks = (props) => {
     showInput = (
       <View style={styles.inputContainer}>
         <View>
-          <BeckCard style={{ marginBottom: 15, marginTop: 60, height: 370 }}>
+          <BeckCard style={{ marginBottom: 15, marginTop: 60, height: 390 }}>
             <View
               style={{
                 padding: 4,
@@ -1832,8 +1831,7 @@ const Becks = (props) => {
                 marginTop: 10,
               }}
             >
-              <Text style={{ fontSize: 15 }}>Resultado:</Text>
-              {showResult}
+              <Text style={{ fontSize: 15 }}>Resultado: {showResult}</Text>
             </View>
 
             <Text style={{ marginTop: 20, fontSize: 15 }}>

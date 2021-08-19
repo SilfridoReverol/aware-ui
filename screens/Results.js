@@ -77,19 +77,14 @@ const Results = (props) => {
         id={itemData.item.id}
         score={itemData.item.total_score}
         date={itemData.item.test_date}
-        // onSelect={() => {
-        //   props.navigation.navigate({
-        //     routeName: 'Establishments',
-        //     params: {
-        //       establishmentId: itemData.item.id,
-        //       establishmentName: itemData.item.name,
-        //       establishmentBudget: itemData.item.budget,
-        //       establishmentDirection: itemData.item.direction,
-        //       establishmentDescription: itemData.item.description,
-        //       establishmentImageURL: itemData.item.imageurl,
-        //     },
-        //   });
-        // }}
+        onSelect={() => {
+          props.navigation.navigate({
+            routeName: 'ResultDetail',
+            params: {
+              itemData,
+            },
+          });
+        }}
       />
     );
   };
@@ -102,7 +97,7 @@ const Results = (props) => {
         style={styles.image}
       >
         <FlatList
-          style={{ marginTop: 70 }}
+          style={{ marginTop: 100 }}
           data={data}
           keyExtractor={(item) => JSON.stringify(item.id)}
           renderItem={renderGridItem}
@@ -121,18 +116,18 @@ const Results = (props) => {
 
 Results.navigationOptions = (navData) => {
   return {
-    headerTitle: 'Resultados',
-    headerLeft: () => (
-      <HeaderButtons HeaderButtonComponent={HeaderButton}>
-        <Item
-          title="exit"
-          iconName="exit"
-          onPress={() => {
-            navData.navigation.replace('Login');
-          }}
-        />
-      </HeaderButtons>
-    ),
+    headerTitle: () => <Text style={{ fontSize: 24 }}>Resultados</Text>,
+    // headerLeft: () => (
+    //   <HeaderButtons HeaderButtonComponent={HeaderButton}>
+    //     <Item
+    //       title="exit"
+    //       iconName="exit"
+    //       onPress={() => {
+    //         navData.navigation.replace('Login');
+    //       }}
+    //     />
+    //   </HeaderButtons>
+    // ),
     // headerShown: false,
   };
 };
@@ -184,17 +179,7 @@ const styles = StyleSheet.create({
     height: 150,
     resizeMode: 'contain',
   },
-  contentContainer: {
-    alignItems: 'center',
 
-    justifyContent: 'center',
-
-    overflow: 'hidden',
-    shadowColor: 'black',
-    shadowOffset: { width: 0, height: 2 },
-    shadowRadius: 2,
-    shadowOpacity: 0.5,
-  },
   awareImage: {
     width: 180,
     height: 40,

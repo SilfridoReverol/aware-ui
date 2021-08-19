@@ -1,15 +1,8 @@
 import React, { useState } from 'react';
 import { useAssets } from 'expo-asset';
 import AppLoading from 'expo-app-loading';
-import { StyleSheet, Text, View } from 'react-native';
 import AwareNavigator from './navigation/AwareNavigator';
 import MainNavigation from './navigation/AwareNavigator';
-
-// const fetchAssets = () => {
-//   return Asset.loadAsync({
-//     'aware-bg': require('./assets/aware-bg.png'),
-//   });
-// };
 
 export default function App() {
   const [assets] = useAssets([
@@ -27,12 +20,3 @@ export default function App() {
 
   return <AwareNavigator />;
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});

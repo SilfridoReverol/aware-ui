@@ -1,22 +1,207 @@
 import React from 'react';
-import { View, Text, ImageBackground, StyleSheet } from 'react-native';
+import {
+  View,
+  Text,
+  ImageBackground,
+  StyleSheet,
+  TextInput,
+  Keyboard,
+  TouchableWithoutFeedback,
+  ScrollView,
+} from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import BeckCard from '../components/BeckCard';
+import MainButton from '../components/MainButton';
 
 const User = () => {
   return (
-    <View style={styles.container}>
-      <ImageBackground
-        source={require('../assets/aware-bg-2.png')}
-        resizeMode="cover"
-        style={styles.image}
-      ></ImageBackground>
-    </View>
+    <TouchableWithoutFeedback
+      onPress={() => {
+        Keyboard.dismiss();
+      }}
+    >
+      <View style={styles.container}>
+        <ImageBackground
+          source={require('../assets/aware-bg-2.png')}
+          resizeMode="cover"
+          style={styles.image}
+        >
+          <View style={styles.contentContainer}>
+            <View style={{ alignItems: 'center', marginBottom: 20 }}>
+              <Ionicons name="person-circle-outline" size={100} color="black" />
+              <Text style={{ fontSize: 30 }}>Silfrido Reverol</Text>
+              <BeckCard style={{ height: 70, marginTop: 30 }}>
+                <View
+                  style={{
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    padding: 5,
+                  }}
+                >
+                  <Text
+                    style={{
+                      fontSize: 16,
+                      textAlign: 'center',
+                      fontWeight: '300',
+                    }}
+                  >
+                    Estado de la anamnesis: Enviado
+                  </Text>
+                </View>
+              </BeckCard>
+              <BeckCard style={{ height: 70, marginTop: 30, marginBottom: 20 }}>
+                <View
+                  style={{
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    padding: 5,
+                  }}
+                >
+                  <Text
+                    style={{
+                      fontSize: 16,
+                      textAlign: 'center',
+                      fontWeight: '300',
+                    }}
+                  >
+                    # Inventarios de Beck: 2
+                  </Text>
+                </View>
+              </BeckCard>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  marginTop: 10,
+                }}
+              >
+                <View
+                  style={{ flex: 1, height: 1, backgroundColor: 'black' }}
+                />
+                <View>
+                  <Text style={{ width: 50, textAlign: 'center' }}>
+                    Ajustes
+                  </Text>
+                </View>
+                <View
+                  style={{ flex: 1, height: 1, backgroundColor: 'black' }}
+                />
+              </View>
+            </View>
+            <ScrollView>
+              <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+                <View style={styles.inputContainer}>
+                  <View style={styles.section}>
+                    <Ionicons name="mail" size={20} color="black" />
+                    <TextInput
+                      // ref={(input) => (passInput = input)}
+                      placeholder="Nuevo Email"
+                      autoCapitalize="none"
+                      keyboardType="email-address"
+                      style={styles.textInput}
+                      // onChangeText={(password) =>
+                      //   setUser({ ...user, password: password })
+                      // }
+                    />
+                  </View>
+                  <View style={styles.section}>
+                    <Ionicons name="mail" size={20} color="black" />
+                    <TextInput
+                      // ref={(input) => (passInput = input)}
+                      placeholder="Nuevo Email del Doctor"
+                      autoCapitalize="none"
+                      keyboardType="email-address"
+                      style={styles.textInput}
+                      // onChangeText={(password) =>
+                      //   setUser({ ...user, password: password })
+                      // }
+                    />
+                  </View>
+                </View>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                  }}
+                >
+                  <View
+                    style={{ width: 200, paddingRight: 5, paddingLeft: 10 }}
+                  >
+                    <View style={styles.section}>
+                      <Ionicons
+                        name="ios-lock-closed"
+                        size={20}
+                        color="black"
+                      />
+                      <TextInput
+                        // ref={(input) => (passInput = input)}
+                        placeholder="Contraseña actual"
+                        autoCapitalize="none"
+                        style={styles.textInput}
+                        secureTextEntry
+                        // onChangeText={(password) =>
+                        //   setUser({ ...user, password: password })
+                        // }
+                      />
+                    </View>
+                  </View>
+
+                  <View
+                    style={{ width: 200, paddingLeft: 5, paddingRight: 10 }}
+                  >
+                    <View style={styles.section}>
+                      <Ionicons
+                        name="ios-lock-closed"
+                        size={20}
+                        color="black"
+                      />
+                      <TextInput
+                        // ref={(input) => (passInput = input)}
+                        placeholder="Nueva contraseña"
+                        autoCapitalize="none"
+                        style={styles.textInput}
+                        secureTextEntry
+                        // onChangeText={(password) =>
+                        //   setUser({ ...user, password: password })
+                        // }
+                      />
+                    </View>
+                  </View>
+                </View>
+                <View style={{ marginTop: 20 }}>
+                  <MainButton
+                    style={{ backgroundColor: '#74b58b', width: 300 }}
+                  >
+                    Guardar Cambios
+                  </MainButton>
+                </View>
+                <View style={{ marginTop: 10 }}>
+                  <MainButton
+                    style={{ backgroundColor: '#F47174', width: 300 }}
+                  >
+                    Cerrar Sesion
+                  </MainButton>
+                </View>
+              </View>
+            </ScrollView>
+          </View>
+        </ImageBackground>
+      </View>
+    </TouchableWithoutFeedback>
   );
+};
+
+User.navigationOptions = (navData) => {
+  return {
+    headerTitle: () => <Text style={{ fontSize: 24 }}>Perfil</Text>,
+  };
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
+    height: '100%',
+    width: '100%',
   },
   logosContainer: {
     justifyContent: 'flex-start',
@@ -27,8 +212,9 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
   inputContainer: {
-    padding: 40,
-    marginBottom: 30,
+    padding: 1,
+    width: 320,
+    marginBottom: 2,
   },
   image: {
     flex: 1,
@@ -62,14 +248,7 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     alignItems: 'center',
-
     justifyContent: 'center',
-
-    overflow: 'hidden',
-    shadowColor: 'black',
-    shadowOffset: { width: 0, height: 2 },
-    shadowRadius: 2,
-    shadowOpacity: 0.5,
   },
   awareImage: {
     width: 180,
@@ -79,7 +258,7 @@ const styles = StyleSheet.create({
   section: {
     flexDirection: 'row',
     borderWidth: 1,
-    borderRadius: 15,
+    borderRadius: 10,
     borderColor: 'rgba(204, 204, 204, 0.78)',
     paddingHorizontal: 15,
     paddingVertical: 10,

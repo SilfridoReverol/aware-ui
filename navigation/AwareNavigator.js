@@ -14,6 +14,7 @@ import Anamnesis from '../screens/Anamnesis';
 import Becks from '../screens/Becks';
 import User from '../screens/User';
 import Results from '../screens/Results';
+import DetailedResult from '../screens/DetailedResult';
 
 // import Colors from '../constants/Colors';
 
@@ -138,92 +139,21 @@ const ResultsStack = createStackNavigator({
   Results: {
     screen: Results,
     navigationOptions: {
-      headerTitle: () => (
-        <View
-          style={{
-            flex: 1,
-            flexDirection: 'row',
-            justifyContent: 'center',
-            alignItems: 'center',
-            overflow: 'visible',
-          }}
-        >
-          <Image
-            style={{
-              width: '50%',
-              shadowColor: 'black',
-              shadowOffset: { width: 1, height: 3 },
-              shadowRadius: 8,
-              shadowOpacity: 0.28,
-              height: '50%',
-            }}
-            source={require('../assets/aware-nobg.png')}
-          />
-        </View>
-      ),
-
       headerTransparent: true,
     },
   },
-  Anamnesis: {
-    screen: Anamnesis,
+  ResultDetail: {
+    screen: DetailedResult,
     navigationOptions: {
-      headerTitle: () => (
-        <View
-          style={{
-            flex: 1,
-            flexDirection: 'row',
-            justifyContent: 'center',
-            alignItems: 'center',
-            overflow: 'visible',
-          }}
-        >
-          <Image
-            style={{
-              width: '80%',
-              shadowColor: 'black',
-              shadowOffset: { width: 1, height: 3 },
-              shadowRadius: 8,
-              shadowOpacity: 0.22,
-              height: '65%',
-            }}
-            source={require('../assets/anamnesis-nobg.png')}
-          />
-        </View>
-      ),
-
       headerTransparent: true,
-      headerTintColor: 'white',
     },
   },
-  Becks: {
-    screen: Becks,
+});
+
+const UserStack = createStackNavigator({
+  User: {
+    screen: User,
     navigationOptions: {
-      headerTitle: () => (
-        <View
-          style={{
-            flex: 1,
-            flexDirection: 'row',
-            justifyContent: 'center',
-            alignItems: 'center',
-            overflow: 'visible',
-          }}
-        >
-          <Image
-            style={{
-              width: '60%',
-              shadowColor: 'black',
-              shadowOffset: { width: 1, height: 3 },
-              shadowRadius: 10,
-              borderRadius: 2,
-              shadowOpacity: 0.22,
-              height: '70%',
-            }}
-            source={require('../assets/becks-nobg.png')}
-          />
-        </View>
-      ),
-      headerTintColor: 'white',
       headerTransparent: true,
     },
   },
@@ -243,12 +173,12 @@ const AwareTabNavigator = createBottomTabNavigator(
       screen: ResultsStack,
       navigationOptions: {
         tabBarIcon: ({ tintColor }) => {
-          return <Ionicons name="list" size={20} color="black" />;
+          return <Ionicons name="list" size={20} color={tintColor} />;
         },
       },
     },
     User: {
-      screen: User,
+      screen: UserStack,
       navigationOptions: {
         tabBarLabel: 'User',
         tabBarIcon: ({ tintColor }) => {
@@ -279,14 +209,9 @@ const AwareTabNavigator = createBottomTabNavigator(
   }
 );
 
-const DrawerNav = createDrawerNavigator({
-  Home: AwareTabNavigator,
-  Results: Results, // You should use another screen.
-});
-
 const MainNavigation = createSwitchNavigator({
-  AuthStack: AuthStackNavigation, // You will use this.props.navigation.replace('HomeDrawer') after login process.
-  HomeDrawer: DrawerNav,
+  // AuthStack: AuthStackNavigation,
+  HomeScreen: AwareTabNavigator,
 });
 
 const AwareNavigator = createAppContainer(MainNavigation);
